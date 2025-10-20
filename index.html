@@ -780,9 +780,27 @@
             </div>
 
             <div class="card">
+              <h2>🧺 Laundry Bookings</h2>
+              <div id="admin-laundry-bookings"></div>
+            </div>
+
+            <div class="card">
               <h2>💬 Enquiries</h2>
               <div id="admin-enquiries"></div>
             </div>
+          </div>
+          
+          <div class="card">
+            <h2>📢 Post Announcement</h2>
+            <div class="form-group">
+              <label>Announcement Title</label>
+              <input type="text" id="announcement-title" placeholder="Enter announcement title...">
+            </div>
+            <div class="form-group">
+              <label>Announcement Message</label>
+              <textarea id="announcement-message" placeholder="Enter announcement message..."></textarea>
+            </div>
+            <button class="btn btn-primary" id="post-announcement-btn">Post Announcement</button>
           </div>
 
           <div class="card">
@@ -814,7 +832,36 @@
             </div>
           `).join('') : '<div class="empty-state">No gym bookings</div>';
 
-        // Render enquiries
+        // Post announcement
+        document.getElementById('post-announcement-btn').addEventListener('click', async () => {
+          const title = document.getElementById('announcement-title').value;
+          const message = document.getElementById('announcement-message').value;
+          
+          if (!title || !message) {
+            showMessage('Please enter both title and message', 'error');
+            return;
+          }
+          
+          try {
+            const res = await fetch(window.location.origin + '/api/admin/post-announcement', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ title, message })
+            });
+            const data = await res.json();
+            if (res.ok) {
+              showMessage('Announcement posted successfully!', 'success');
+              document.getElementById('announcement-title').value = '';
+              document.getElementById('announcement-message').value = '';
+            } else {
+              showMessage(data.error || 'Failed to post announcement', 'error');
+            }
+          } catch (err) {
+            showMessage('Error posting announcement', 'error');
+          }
+        });
+
+                // Render enquiries
         document.getElementById('admin-enquiries').innerHTML = enquiries.length ?
           enquiries.map(e => `
             <div class="booking-item">
@@ -877,6 +924,46 @@
         renderAdmin();
       } catch (e) {
         showAlert('✗ ' + e.message, 'error');
+      }
+    };
+    
+    // Confirm laundry booking
+    window.confirmLaundry = async (id) => {
+      try {
+        const res = await fetch(window.location.origin + '/api/admin/confirm-laundry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMessage('Laundry booking confirmed!', 'success');
+          renderAdmin();
+        } else {
+          showMessage(data.error || 'Failed to confirm booking', 'error');
+        }
+      } catch (err) {
+        showMessage('Error confirming booking', 'error');
+      }
+    };
+
+    // Reject laundry booking
+    window.rejectLaundry = async (id) => {
+      try {
+        const res = await fetch(window.location.origin + '/api/admin/reject-laundry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showMessage('Laundry booking rejected!', 'success');
+          renderAdmin();
+        } else {
+          showMessage(data.error || 'Failed to reject booking', 'error');
+        }
+      } catch (err) {
+        showMessage('Error rejecting booking', 'error');
       }
     };
 

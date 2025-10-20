@@ -31,5 +31,20 @@
     "status": "Pending",
     "token": "gym_u5l94n7r",
     "createdAt": "2025-10-20T19:15:19.437Z"
+  },
+  {
+    "id": "booking_93z10ddl",
+    "userId": "student1",
+    "type": "Laundry",
+    "slot": "06:00-06:50",
+    "numLoads": 3,
+    "status": "Confirmed",
+    "token": "laundry_ta5kciy2",
+    "meta": {
+      "arrivalAt": "05:50",
+      "endTime": "08:30",
+      "totalMinutes": 150
+    },
+    "createdAt": "2025-10-20T23:40:08.615Z"
   }
 ]
