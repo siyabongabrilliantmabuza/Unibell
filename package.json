@@ -1,0 +1,17 @@
+{
+  "name": "unibell",
+  "version": "2.0.0",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "mongoose": "^7.0.0",
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "qrcode": "^1.5.0",
+    "socket.io": "^4.5.4",
+    "dotenv": "^16.0.3"
+  }
+}

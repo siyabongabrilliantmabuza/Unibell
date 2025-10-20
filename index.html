@@ -1,0 +1,878 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unibell Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .navbar-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .user-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .theme-selector {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .theme-selector:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .theme-selector option {
+      background: #333;
+      color: white;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin-top: 16px;
+      margin-bottom: 12px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      color: #555;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+      border: 2px solid #e0e0e0;
+    }
+
+    .btn-secondary:hover {
+      background: #e8e8e8;
+      border-color: #667eea;
+      color: #667eea;
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .booking-item {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border-left: 4px solid #667eea;
+    }
+
+    .booking-item.pending {
+      border-left-color: #ffa500;
+    }
+
+    .booking-item.confirmed {
+      border-left-color: #4caf50;
+    }
+
+    .booking-item.rejected {
+      border-left-color: #f44336;
+    }
+
+    .booking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .booking-type {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .booking-status {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .booking-status.pending {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .booking-status.confirmed {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+
+    .booking-status.rejected {
+      background: #ffebee;
+      color: #d32f2f;
+    }
+
+    .booking-details {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .booking-token {
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      background: #f0f0f0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #667eea;
+      word-break: break-all;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px;
+      color: #999;
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .announcement-item {
+      background: #f0f4ff;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border-left: 4px solid #667eea;
+    }
+
+    .announcement-text {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .announcement-date {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .qr-container {
+      text-align: center;
+      padding: 16px;
+      background: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .qr-container img {
+      max-width: 200px;
+      height: auto;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert-success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-left: 4px solid #4caf50;
+    }
+
+    .alert-error {
+      background: #ffebee;
+      color: #c62828;
+      border-left: 4px solid #f44336;
+    }
+
+    .alert-info {
+      background: #e3f2fd;
+      color: #1565c0;
+      border-left: 4px solid #2196f3;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .admin-section {
+      background: #fff3e0;
+      border-left: 4px solid #ff9800;
+      padding: 16px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+
+    .admin-section h3 {
+      color: #e65100;
+      margin-top: 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .tab {
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #999;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .tab.active {
+      color: #667eea;
+      border-bottom-color: #667eea;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>🎓 Unibell</h1>
+    <div class="navbar-right">
+      <div class="user-badge" id="user-info"></div>
+      <select class="theme-selector" id="theme-select">
+        <option value="dark">🌙 Dark</option>
+        <option value="light">☀️ Light</option>
+        <option value="animation">✨ Animation</option>
+        <option value="urban">🏙️ Urban</option>
+        <option value="uwc">🎓 UWC</option>
+      </select>
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="alerts"></div>
+    <div id="app"></div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:4000/api';
+    const token = localStorage.getItem('token');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+    // Redirect if not logged in
+    if (!token || !currentUser) {
+      window.location = 'login.html';
+    }
+
+    // Load theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.className = `theme-${savedTheme}`;
+    document.getElementById('theme-select').value = savedTheme;
+
+    // Set user info
+    document.getElementById('user-info').textContent = `${currentUser.userId} (${currentUser.userType})`;
+
+    // Theme selector
+    document.getElementById('theme-select').addEventListener('change', (e) => {
+      const theme = e.target.value;
+      document.body.className = `theme-${theme}`;
+      localStorage.setItem('theme', theme);
+    });
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('currentUser');
+      window.location = 'login.html';
+    });
+
+    // Alert system
+    function showAlert(message, type = 'info') {
+      const alertsDiv = document.getElementById('alerts');
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type} show`;
+      alert.textContent = message;
+      alertsDiv.appendChild(alert);
+      setTimeout(() => alert.remove(), 5000);
+    }
+
+    // Fetch with auth
+    async function fetchAPI(endpoint, options = {}) {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        ...options.headers
+      };
+      const res = await fetch(API + endpoint, { ...options, headers });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'API error');
+      }
+      return data;
+    }
+
+    // Render student dashboard
+    async function renderStudent() {
+      try {
+        const slots = await fetchAPI('/slots');
+        const bookings = await fetchAPI('/bookings');
+        const enquiries = await fetchAPI('/enquiries/user');
+        const reports = await fetchAPI('/reports/user');
+        const announcements = await fetchAPI('/announcements');
+
+        let html = `
+          <div class="dashboard-grid">
+            <div class="card">
+              <h2>📅 Book Gym</h2>
+              <div class="form-group">
+                <label>Select Time Slot</label>
+                <select id="gym-slot">
+                  ${slots.gym.map(s => `<option value="${s}">${s}</option>`).join('')}
+                </select>
+              </div>
+              <button class="btn btn-primary" id="book-gym-btn">Book Gym</button>
+              <h3>Your Gym Bookings</h3>
+              <div id="gym-bookings"></div>
+            </div>
+
+            <div class="card">
+              <h2>🧺 Book Laundry</h2>
+              <div class="form-group">
+                <label>Select Time Slot</label>
+                <select id="laundry-slot">
+                  ${slots.laundry.slice(0, 20).map(s => `<option value="${s}">${s}</option>`).join('')}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Number of Loads (1-3)</label>
+                <input type="number" id="laundry-loads" min="1" max="3" value="1">
+              </div>
+              <button class="btn btn-primary" id="book-laundry-btn">Book Laundry</button>
+              <h3>Your Laundry Bookings</h3>
+              <div id="laundry-bookings"></div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="card">
+              <h2>💬 Send Enquiry</h2>
+              <div class="form-group">
+                <label>Your Question</label>
+                <textarea id="enquiry-text" placeholder="Ask your question here..."></textarea>
+              </div>
+              <button class="btn btn-primary" id="send-enquiry-btn">Send Enquiry</button>
+              <h3>Your Enquiries</h3>
+              <div id="enquiries-list"></div>
+            </div>
+
+            <div class="card">
+              <h2>🚨 Report Issue</h2>
+              <div class="form-group">
+                <label>Describe the Issue</label>
+                <textarea id="report-text" placeholder="Describe the problem..."></textarea>
+              </div>
+              <button class="btn btn-primary" id="send-report-btn">Send Report</button>
+              <h3>Your Reports</h3>
+              <div id="reports-list"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>📢 Announcements</h2>
+            <div id="announcements-list"></div>
+          </div>
+        `;
+
+        document.getElementById('app').innerHTML = html;
+
+        // Book gym
+        document.getElementById('book-gym-btn').addEventListener('click', async () => {
+          const slot = document.getElementById('gym-slot').value;
+          try {
+            await fetchAPI('/book/gym', {
+              method: 'POST',
+              body: JSON.stringify({ slot })
+            });
+            showAlert('✓ Gym booking submitted! Awaiting admin confirmation.', 'success');
+            renderStudent();
+          } catch (e) {
+            showAlert('✗ ' + e.message, 'error');
+          }
+        });
+
+        // Book laundry
+        document.getElementById('book-laundry-btn').addEventListener('click', async () => {
+          const slot = document.getElementById('laundry-slot').value;
+          const numLoads = parseInt(document.getElementById('laundry-loads').value);
+          try {
+            await fetchAPI('/book/laundry', {
+              method: 'POST',
+              body: JSON.stringify({ slot, numLoads })
+            });
+            showAlert('✓ Laundry booking confirmed!', 'success');
+            renderStudent();
+          } catch (e) {
+            showAlert('✗ ' + e.message, 'error');
+          }
+        });
+
+        // Send enquiry
+        document.getElementById('send-enquiry-btn').addEventListener('click', async () => {
+          const text = document.getElementById('enquiry-text').value.trim();
+          if (!text) {
+            showAlert('Please enter your enquiry', 'error');
+            return;
+          }
+          try {
+            await fetchAPI('/enquiry', {
+              method: 'POST',
+              body: JSON.stringify({ text })
+            });
+            showAlert('✓ Enquiry sent!', 'success');
+            document.getElementById('enquiry-text').value = '';
+            renderStudent();
+          } catch (e) {
+            showAlert('✗ ' + e.message, 'error');
+          }
+        });
+
+        // Send report
+        document.getElementById('send-report-btn').addEventListener('click', async () => {
+          const text = document.getElementById('report-text').value.trim();
+          if (!text) {
+            showAlert('Please describe the issue', 'error');
+            return;
+          }
+          try {
+            await fetchAPI('/report', {
+              method: 'POST',
+              body: JSON.stringify({ text })
+            });
+            showAlert('✓ Report sent!', 'success');
+            document.getElementById('report-text').value = '';
+            renderStudent();
+          } catch (e) {
+            showAlert('✗ ' + e.message, 'error');
+          }
+        });
+
+        // Render bookings
+        const gymBookings = bookings.filter(b => b.type === 'Gym');
+        const laundryBookings = bookings.filter(b => b.type === 'Laundry');
+
+        document.getElementById('gym-bookings').innerHTML = gymBookings.length ? 
+          gymBookings.map(b => `
+            <div class="booking-item ${b.status.toLowerCase()}">
+              <div class="booking-header">
+                <span class="booking-type">${b.slot}</span>
+                <span class="booking-status ${b.status.toLowerCase()}">${b.status}</span>
+              </div>
+              <div class="booking-details">
+                <div>Created: ${new Date(b.createdAt).toLocaleString()}</div>
+                <div>Token: <span class="booking-token">${b.token}</span></div>
+              </div>
+            </div>
+          `).join('') : '<div class="empty-state">No gym bookings yet</div>';
+
+        document.getElementById('laundry-bookings').innerHTML = laundryBookings.length ?
+          laundryBookings.map(b => `
+            <div class="booking-item ${b.status.toLowerCase()}">
+              <div class="booking-header">
+                <span class="booking-type">${b.slot} (${b.numLoads} load${b.numLoads > 1 ? 's' : ''})</span>
+                <span class="booking-status ${b.status.toLowerCase()}">${b.status}</span>
+              </div>
+              <div class="booking-details">
+                <div>Arrive: ${b.meta?.arrivalAt || 'N/A'}</div>
+                <div>Created: ${new Date(b.createdAt).toLocaleString()}</div>
+                <div>Token: <span class="booking-token">${b.token}</span></div>
+              </div>
+            </div>
+          `).join('') : '<div class="empty-state">No laundry bookings yet</div>';
+
+        // Render enquiries
+        document.getElementById('enquiries-list').innerHTML = enquiries.length ?
+          enquiries.map(e => `
+            <div class="booking-item">
+              <div class="booking-header">
+                <span class="booking-type">Q: ${e.text.substring(0, 50)}...</span>
+                <span class="booking-status">${e.feedback ? '✓ Replied' : '⏳ Pending'}</span>
+              </div>
+              ${e.feedback ? `<div class="booking-details"><strong>A:</strong> ${e.feedback}</div>` : ''}
+            </div>
+          `).join('') : '<div class="empty-state">No enquiries yet</div>';
+
+        // Render reports
+        document.getElementById('reports-list').innerHTML = reports.length ?
+          reports.map(r => `
+            <div class="booking-item">
+              <div class="booking-header">
+                <span class="booking-type">${r.text.substring(0, 50)}...</span>
+                <span class="booking-status">${r.feedback ? '✓ Resolved' : '⏳ Pending'}</span>
+              </div>
+              ${r.feedback ? `<div class="booking-details"><strong>Response:</strong> ${r.feedback}</div>` : ''}
+            </div>
+          `).join('') : '<div class="empty-state">No reports yet</div>';
+
+        // Render announcements
+        document.getElementById('announcements-list').innerHTML = announcements.length ?
+          announcements.map(a => `
+            <div class="announcement-item">
+              <div class="announcement-text">${a.text}</div>
+              <div class="announcement-date">${new Date(a.createdAt).toLocaleString()}</div>
+            </div>
+          `).join('') : '<div class="empty-state">No announcements</div>';
+
+      } catch (e) {
+        showAlert('Error loading dashboard: ' + e.message, 'error');
+      }
+    }
+
+    // Render admin dashboard
+    async function renderAdmin() {
+      try {
+        const bookings = await fetchAPI('/bookings');
+        const enquiries = await fetchAPI('/admin/enquiries');
+        const reports = await fetchAPI('/admin/reports');
+
+        let html = `
+          <div class="admin-section">
+            <h3>🔐 Admin Panel</h3>
+            <p>Manage gym bookings, enquiries, and reports</p>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="card">
+              <h2>📋 Gym Bookings</h2>
+              <div id="admin-gym-bookings"></div>
+            </div>
+
+            <div class="card">
+              <h2>💬 Enquiries</h2>
+              <div id="admin-enquiries"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>🚨 Reports</h2>
+            <div id="admin-reports"></div>
+          </div>
+        `;
+
+        document.getElementById('app').innerHTML = html;
+
+        // Render gym bookings
+        const gymBookings = bookings.filter(b => b.type === 'Gym');
+        document.getElementById('admin-gym-bookings').innerHTML = gymBookings.length ?
+          gymBookings.map(b => `
+            <div class="booking-item ${b.status.toLowerCase()}">
+              <div class="booking-header">
+                <span class="booking-type">${b.userId} - ${b.slot}</span>
+                <span class="booking-status ${b.status.toLowerCase()}">${b.status}</span>
+              </div>
+              <div class="booking-details">
+                <div>Token: <span class="booking-token">${b.token}</span></div>
+              </div>
+              ${b.status === 'Pending' ? `
+                <div style="display: flex; gap: 8px; margin-top: 8px;">
+                  <button class="btn btn-small btn-primary" onclick="confirmGym('${b.id}')">✓ Confirm</button>
+                  <button class="btn btn-small btn-secondary" onclick="rejectGym('${b.id}')">✗ Reject</button>
+                </div>
+              ` : ''}
+            </div>
+          `).join('') : '<div class="empty-state">No gym bookings</div>';
+
+        // Render enquiries
+        document.getElementById('admin-enquiries').innerHTML = enquiries.length ?
+          enquiries.map(e => `
+            <div class="booking-item">
+              <div class="booking-header">
+                <span class="booking-type">${e.userId}</span>
+                <span class="booking-status">${e.feedback ? '✓ Replied' : '⏳ Pending'}</span>
+              </div>
+              <div class="booking-details">
+                <strong>Q:</strong> ${e.text}
+                ${e.feedback ? `<div style="margin-top: 8px;"><strong>A:</strong> ${e.feedback}</div>` : `
+                  <div style="margin-top: 8px;">
+                    <textarea id="reply-${e.id}" placeholder="Type your reply..." style="width: 100%; min-height: 60px;"></textarea>
+                    <button class="btn btn-small btn-primary" style="margin-top: 8px;" onclick="replyEnquiry('${e.id}')">Send Reply</button>
+                  </div>
+                `}
+              </div>
+            </div>
+          `).join('') : '<div class="empty-state">No enquiries</div>';
+
+        // Render reports
+        document.getElementById('admin-reports').innerHTML = reports.length ?
+          reports.map(r => `
+            <div class="booking-item">
+              <div class="booking-header">
+                <span class="booking-type">${r.userId}</span>
+                <span class="booking-status">${r.feedback ? '✓ Resolved' : '⏳ Pending'}</span>
+              </div>
+              <div class="booking-details">
+                <strong>Issue:</strong> ${r.text}
+                ${r.feedback ? `<div style="margin-top: 8px;"><strong>Response:</strong> ${r.feedback}</div>` : `
+                  <div style="margin-top: 8px;">
+                    <textarea id="reply-${r.id}" placeholder="Type your response..." style="width: 100%; min-height: 60px;"></textarea>
+                    <button class="btn btn-small btn-primary" style="margin-top: 8px;" onclick="replyReport('${r.id}')">Send Response</button>
+                  </div>
+                `}
+              </div>
+            </div>
+          `).join('') : '<div class="empty-state">No reports</div>';
+
+      } catch (e) {
+        showAlert('Error loading admin panel: ' + e.message, 'error');
+      }
+    }
+
+    // Admin functions
+    window.confirmGym = async (id) => {
+      try {
+        await fetchAPI(`/admin/gym/${id}/confirm`, { method: 'POST' });
+        showAlert('✓ Booking confirmed!', 'success');
+        renderAdmin();
+      } catch (e) {
+        showAlert('✗ ' + e.message, 'error');
+      }
+    };
+
+    window.rejectGym = async (id) => {
+      try {
+        await fetchAPI(`/admin/gym/${id}/reject`, { method: 'POST' });
+        showAlert('✓ Booking rejected!', 'success');
+        renderAdmin();
+      } catch (e) {
+        showAlert('✗ ' + e.message, 'error');
+      }
+    };
+
+    window.replyEnquiry = async (id) => {
+      const feedback = document.getElementById(`reply-${id}`).value.trim();
+      if (!feedback) {
+        showAlert('Please enter a reply', 'error');
+        return;
+      }
+      try {
+        await fetchAPI(`/admin/enquiry/${id}/reply`, {
+          method: 'POST',
+          body: JSON.stringify({ feedback })
+        });
+        showAlert('✓ Reply sent!', 'success');
+        renderAdmin();
+      } catch (e) {
+        showAlert('✗ ' + e.message, 'error');
+      }
+    };
+
+    window.replyReport = async (id) => {
+      const feedback = document.getElementById(`reply-${id}`).value.trim();
+      if (!feedback) {
+        showAlert('Please enter a response', 'error');
+        return;
+      }
+      try {
+        await fetchAPI(`/admin/report/${id}/reply`, {
+          method: 'POST',
+          body: JSON.stringify({ feedback })
+        });
+        showAlert('✓ Response sent!', 'success');
+        renderAdmin();
+      } catch (e) {
+        showAlert('✗ ' + e.message, 'error');
+      }
+    };
+
+    // Initialize
+    if (currentUser.userType === 'student') {
+      renderStudent();
+    } else {
+      renderAdmin();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unibell — Login</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #333;
+      font-weight: 700;
+    }
+
+    .login-header .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: #999;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 12px;
+    }
+
+    .login-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .login-button:active {
+      transform: translateY(0);
+    }
+
+    .login-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .register-button {
+      width: 100%;
+      padding: 12px;
+      background: #f5f5f5;
+      color: #333;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .register-button:hover {
+      background: #efefef;
+      border-color: #667eea;
+      color: #667eea;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c33;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      border-left: 4px solid #c33;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .success-message {
+      background: #efe;
+      color: #3c3;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      border-left: 4px solid #3c3;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .demo-credentials {
+      background: #f0f4ff;
+      border-left: 4px solid #667eea;
+      padding: 14px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .demo-credentials strong {
+      color: #333;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .demo-item {
+      margin: 4px 0;
+      font-family: 'Courier New', monospace;
+      color: #667eea;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: #667eea;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-row button {
+      flex: 1;
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 30px 20px;
+      }
+
+      .login-header h1 {
+        font-size: 24px;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>🎓 Unibell</h1>
+        <p class="subtitle">University Facility Booking System</p>
+      </div>
+
+      <div id="error-message" class="error-message"></div>
+      <div id="success-message" class="success-message"></div>
+
+      <div class="demo-credentials">
+        <strong>Demo Accounts:</strong>
+        <div class="demo-item">👤 Student: student1 / student123</div>
+        <div class="demo-item">🔐 Admin: admin@unibell / Admin@123</div>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="user">Email or Student ID</label>
+          <input 
+            id="user" 
+            type="text" 
+            placeholder="e.g., student1 or admin@unibell"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="pass">Password</label>
+          <input 
+            id="pass" 
+            type="password" 
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button type="submit" class="login-button" id="btn">
+          Sign In
+        </button>
+
+        <button type="button" class="register-button" id="register">
+          Create New Account
+        </button>
+
+        <div class="loading" id="loading">
+          <span class="spinner"></span>
+          <span>Signing in...</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:4000/api';
+    const form = document.getElementById('login-form');
+    const userInput = document.getElementById('user');
+    const passInput = document.getElementById('pass');
+    const btn = document.getElementById('btn');
+    const registerBtn = document.getElementById('register');
+    const errorMsg = document.getElementById('error-message');
+    const successMsg = document.getElementById('success-message');
+    const loading = document.getElementById('loading');
+
+    // Show error message
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.classList.add('show');
+      successMsg.classList.remove('show');
+      setTimeout(() => errorMsg.classList.remove('show'), 5000);
+    }
+
+    // Show success message
+    function showSuccess(message) {
+      successMsg.textContent = message;
+      successMsg.classList.add('show');
+      errorMsg.classList.remove('show');
+    }
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const user = userInput.value.trim();
+      const pass = passInput.value;
+
+      // Validation
+      if (!user) {
+        showError('Please enter your email or student ID');
+        userInput.focus();
+        return;
+      }
+
+      if (!pass) {
+        showError('Please enter your password');
+        passInput.focus();
+        return;
+      }
+
+      if (pass.length < 6) {
+        showError('Password must be at least 6 characters');
+        return;
+      }
+
+      // Show loading state
+      btn.disabled = true;
+      loading.style.display = 'block';
+      errorMsg.classList.remove('show');
+
+      try {
+        const res = await fetch(API + '/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user, password: pass })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError(data.error || 'Login failed. Please try again.');
+          btn.disabled = false;
+          loading.style.display = 'none';
+          return;
+        }
+
+        // Success
+        showSuccess('Login successful! Redirecting...');
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+          window.location = 'index.html';
+        }, 500);
+
+      } catch (error) {
+        console.error('Login error:', error);
+        showError('Connection error. Please check your internet and try again.');
+        btn.disabled = false;
+        loading.style.display = 'none';
+      }
+    });
+
+    // Register button
+    registerBtn.addEventListener('click', () => {
+      window.location = 'register.html';
+    });
+
+    // Enter key to submit
+    passInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        form.dispatchEvent(new Event('submit'));
+      }
+    });
+
+    // Auto-fill demo credentials on click
+    document.querySelectorAll('.demo-item').forEach(item => {
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', () => {
+        const text = item.textContent;
+        if (text.includes('student1')) {
+          userInput.value = 'student1';
+          passInput.value = 'student123';
+        } else if (text.includes('admin@unibell')) {
+          userInput.value = 'admin@unibell';
+          passInput.value = 'Admin@123';
+        }
+        userInput.focus();
+      });
+    });
+
+    // Focus management
+    userInput.addEventListener('focus', () => {
+      errorMsg.classList.remove('show');
+    });
+  </script>
+</body>
+</html>

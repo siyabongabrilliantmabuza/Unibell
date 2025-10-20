@@ -1,0 +1,26 @@
+[
+  {
+    "id": "booking_dmwa1omo",
+    "userId": "testuser@example.com",
+    "type": "Gym",
+    "slot": "05:00-06:00",
+    "status": "Pending",
+    "token": "gym_vou3z345",
+    "createdAt": "2025-10-19T23:57:38.803Z"
+  },
+  {
+    "id": "booking_ll9qgbky",
+    "userId": "testuser@example.com",
+    "type": "Laundry",
+    "slot": "06:00-06:50",
+    "numLoads": 1,
+    "status": "Confirmed",
+    "token": "laundry_i3lguvmo",
+    "meta": {
+      "arrivalAt": "05:50",
+      "endTime": "06:50",
+      "totalMinutes": 50
+    },
+    "createdAt": "2025-10-19T23:58:38.158Z"
+  }
+]

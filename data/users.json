@@ -1,0 +1,29 @@
+[
+  {
+    "id": "admin@unibell",
+    "userId": "admin@unibell",
+    "passwordHash": "Admin@123",
+    "userType": "admin",
+    "phone": "",
+    "theme": "dark",
+    "createdAt": "2025-10-19T22:45:37.362Z"
+  },
+  {
+    "id": "student1",
+    "userId": "student1",
+    "passwordHash": "student123",
+    "userType": "student",
+    "phone": "",
+    "theme": "dark",
+    "createdAt": "2025-10-19T22:45:37.362Z"
+  },
+  {
+    "id": "user_y98rnhmi",
+    "userId": "testuser@example.com",
+    "passwordHash": "TestPass123",
+    "userType": "student",
+    "phone": "",
+    "theme": "dark",
+    "createdAt": "2025-10-19T23:43:42.590Z"
+  }
+]

@@ -1,0 +1,499 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unibell — Register</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .register-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    .register-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #333;
+      font-weight: 700;
+    }
+
+    .register-header .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: #999;
+    }
+
+    .password-strength {
+      margin-top: 6px;
+      font-size: 12px;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s ease;
+      background: #ccc;
+    }
+
+    .password-strength-bar.weak {
+      width: 33%;
+      background: #ff6b6b;
+    }
+
+    .password-strength-bar.medium {
+      width: 66%;
+      background: #ffd93d;
+    }
+
+    .password-strength-bar.strong {
+      width: 100%;
+      background: #6bcf7f;
+    }
+
+    .register-button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 12px;
+    }
+
+    .register-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .register-button:active {
+      transform: translateY(0);
+    }
+
+    .register-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 12px;
+      background: #f5f5f5;
+      color: #333;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-button:hover {
+      background: #efefef;
+      border-color: #667eea;
+      color: #667eea;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c33;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      border-left: 4px solid #c33;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .success-message {
+      background: #efe;
+      color: #3c3;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      border-left: 4px solid #3c3;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: #667eea;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-row button {
+      flex: 1;
+    }
+
+    .info-box {
+      background: #f0f4ff;
+      border-left: 4px solid #667eea;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    @media (max-width: 480px) {
+      .register-card {
+        padding: 30px 20px;
+      }
+
+      .register-header h1 {
+        font-size: 24px;
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-card">
+      <div class="register-header">
+        <h1>🎓 Unibell</h1>
+        <p class="subtitle">Create Your Account</p>
+      </div>
+
+      <div id="error-message" class="error-message"></div>
+      <div id="success-message" class="success-message"></div>
+
+      <div class="info-box">
+        ℹ️ Create an account to book gym slots and laundry facilities at your university.
+      </div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label for="user">Email or Student ID</label>
+          <input 
+            id="user" 
+            type="text" 
+            placeholder="e.g., student123 or your@email.com"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="pass">Password</label>
+          <input 
+            id="pass" 
+            type="password" 
+            placeholder="At least 6 characters"
+            autocomplete="new-password"
+            required
+          >
+          <div class="password-strength">
+            <div class="password-strength-bar" id="strength-bar"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pass-confirm">Confirm Password</label>
+          <input 
+            id="pass-confirm" 
+            type="password" 
+            placeholder="Re-enter your password"
+            autocomplete="new-password"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="usertype">Account Type</label>
+          <select id="usertype" required>
+            <option value="student">Student</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone (Optional)</label>
+          <input 
+            id="phone" 
+            type="tel" 
+            placeholder="e.g., +27 123 456 7890"
+            autocomplete="tel"
+          >
+        </div>
+
+        <button type="submit" class="register-button" id="btn">
+          Create Account
+        </button>
+
+        <button type="button" class="login-button" id="login">
+          Back to Login
+        </button>
+
+        <div class="loading" id="loading">
+          <span class="spinner"></span>
+          <span>Creating account...</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:4000/api';
+    const form = document.getElementById('register-form');
+    const userInput = document.getElementById('user');
+    const passInput = document.getElementById('pass');
+    const passConfirmInput = document.getElementById('pass-confirm');
+    const usertypeInput = document.getElementById('usertype');
+    const phoneInput = document.getElementById('phone');
+    const btn = document.getElementById('btn');
+    const loginBtn = document.getElementById('login');
+    const errorMsg = document.getElementById('error-message');
+    const successMsg = document.getElementById('success-message');
+    const loading = document.getElementById('loading');
+    const strengthBar = document.getElementById('strength-bar');
+
+    // Password strength indicator
+    passInput.addEventListener('input', () => {
+      const pass = passInput.value;
+      const strength = calculatePasswordStrength(pass);
+      
+      strengthBar.className = 'password-strength-bar';
+      if (strength === 'weak') {
+        strengthBar.classList.add('weak');
+      } else if (strength === 'medium') {
+        strengthBar.classList.add('medium');
+      } else if (strength === 'strong') {
+        strengthBar.classList.add('strong');
+      }
+    });
+
+    function calculatePasswordStrength(pass) {
+      if (pass.length < 6) return 'weak';
+      if (pass.length < 10) return 'medium';
+      if (/[A-Z]/.test(pass) && /[0-9]/.test(pass)) return 'strong';
+      return 'medium';
+    }
+
+    // Show error message
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.classList.add('show');
+      successMsg.classList.remove('show');
+      setTimeout(() => errorMsg.classList.remove('show'), 5000);
+    }
+
+    // Show success message
+    function showSuccess(message) {
+      successMsg.textContent = message;
+      successMsg.classList.add('show');
+      errorMsg.classList.remove('show');
+    }
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const user = userInput.value.trim();
+      const pass = passInput.value;
+      const passConfirm = passConfirmInput.value;
+      const usertype = usertypeInput.value;
+      const phone = phoneInput.value.trim();
+
+      // Validation
+      if (!user) {
+        showError('Please enter an email or student ID');
+        userInput.focus();
+        return;
+      }
+
+      if (!pass) {
+        showError('Please enter a password');
+        passInput.focus();
+        return;
+      }
+
+      if (pass.length < 6) {
+        showError('Password must be at least 6 characters');
+        passInput.focus();
+        return;
+      }
+
+      if (pass !== passConfirm) {
+        showError('Passwords do not match');
+        passConfirmInput.focus();
+        return;
+      }
+
+      // Show loading state
+      btn.disabled = true;
+      loading.style.display = 'block';
+      errorMsg.classList.remove('show');
+
+      try {
+        const res = await fetch(API + '/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            userId: user, 
+            password: pass, 
+            userType: usertype,
+            phone: phone 
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError(data.error || 'Registration failed. Please try again.');
+          btn.disabled = false;
+          loading.style.display = 'none';
+          return;
+        }
+
+        // Success
+        showSuccess('Account created successfully! Redirecting to login...');
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+          window.location = 'index.html';
+        }, 1000);
+
+      } catch (error) {
+        console.error('Registration error:', error);
+        showError('Connection error. Please check your internet and try again.');
+        btn.disabled = false;
+        loading.style.display = 'none';
+      }
+    });
+
+    // Login button
+    loginBtn.addEventListener('click', () => {
+      window.location = 'login.html';
+    });
+
+    // Enter key to submit
+    phoneInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        form.dispatchEvent(new Event('submit'));
+      }
+    });
+  </script>
+</body>
+</html>
