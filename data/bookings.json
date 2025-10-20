@@ -22,5 +22,14 @@
       "totalMinutes": 50
     },
     "createdAt": "2025-10-19T23:58:38.158Z"
+  },
+  {
+    "id": "booking_gsng0xde",
+    "userId": "student1",
+    "type": "Gym",
+    "slot": "05:00-06:00",
+    "status": "Pending",
+    "token": "gym_u5l94n7r",
+    "createdAt": "2025-10-20T19:15:19.437Z"
   }
 ]
