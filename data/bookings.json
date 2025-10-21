@@ -1,12 +1,27 @@
 [
   {
-    "id": "booking_dmwa1omo",
-    "userId": "testuser@example.com",
+    "id": "booking_93z10ddl",
+    "userId": "student1",
+    "type": "Laundry",
+    "slot": "06:00-06:50",
+    "numLoads": 3,
+    "status": "Confirmed",
+    "token": "laundry_ta5kciy2",
+    "meta": {
+      "arrivalAt": "05:50",
+      "endTime": "08:30",
+      "totalMinutes": 150
+    },
+    "createdAt": "2025-10-20T23:40:08.615Z"
+  },
+  {
+    "id": "booking_gsng0xde",
+    "userId": "student1",
     "type": "Gym",
     "slot": "05:00-06:00",
-    "status": "Pending",
-    "token": "gym_vou3z345",
-    "createdAt": "2025-10-19T23:57:38.803Z"
+    "status": "Confirmed",
+    "token": "gym_u5l94n7r",
+    "createdAt": "2025-10-20T19:15:19.437Z"
   },
   {
     "id": "booking_ll9qgbky",
@@ -24,27 +39,12 @@
     "createdAt": "2025-10-19T23:58:38.158Z"
   },
   {
-    "id": "booking_gsng0xde",
-    "userId": "student1",
+    "id": "booking_dmwa1omo",
+    "userId": "testuser@example.com",
     "type": "Gym",
     "slot": "05:00-06:00",
-    "status": "Pending",
-    "token": "gym_u5l94n7r",
-    "createdAt": "2025-10-20T19:15:19.437Z"
-  },
-  {
-    "id": "booking_93z10ddl",
-    "userId": "student1",
-    "type": "Laundry",
-    "slot": "06:00-06:50",
-    "numLoads": 3,
-    "status": "Confirmed",
-    "token": "laundry_ta5kciy2",
-    "meta": {
-      "arrivalAt": "05:50",
-      "endTime": "08:30",
-      "totalMinutes": 150
-    },
-    "createdAt": "2025-10-20T23:40:08.615Z"
+    "status": "Rejected",
+    "token": "gym_vou3z345",
+    "createdAt": "2025-10-19T23:57:38.803Z"
   }
 ]
